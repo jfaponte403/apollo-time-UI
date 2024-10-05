@@ -1,0 +1,67 @@
+body {
+    background: linear-gradient(45deg, var(--color-white-soft), var(--color-gray-medium));
+    min-height: 100vh;
+}
+
+.center-container {
+    width: 90%;
+    max-width: 540px;
+    height: auto;
+    max-height: 480px;
+    margin: auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+input[type="text"],
+input[type="password"] {
+    border: none;
+    border-bottom: 1px solid black;
+    background-color: var(--color-gray-light);
+    border-radius: 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    width: 100%;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    font-family: inherit;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-bottom-color: var(--color-black-soft);
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+    outline: none;
+}
+
+.btn-login {
+    width: auto;
+    padding: 8px 16px;
+    margin-top: 15px;
+}
+
+.input-icon {
+    position: relative;
+}
+
+.input-icon i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-gray-medium);
+}
+
+.input-icon input {
+    padding-left: 35px;
+}
+
+@media (max-width: 768px) {
+    .center-container {
+        width: 95%;
+    }
+}
