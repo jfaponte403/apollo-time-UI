@@ -1,25 +1,18 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
+import axios, {AxiosError, AxiosResponse} from "axios";
+import {LoginPost} from "../interfaces/LoginPost.ts";
+import {LoginResponse} from "../interfaces/LoginResponse.ts";
+import {ErrorResponse} from "../interfaces/ErrorResponse.ts";
 
 const API_URL = import.meta.env.VITE_BASE_URL;
 
-export interface LoginResponse {
-    message: string;
-}
-
-export interface ErrorResponse {
-    message: string;
-}
 
 export const login = async (
-    username: string,
-    password: string
-): Promise<LoginResponse | undefined> => {
+    route: string,
+    loginData: LoginPost
+): Promise<AxiosResponse<LoginResponse> | undefined> => {
     try {
-        const response: AxiosResponse<LoginResponse> = await axios.post(API_URL, {
-            username,
-            password,
-        });
-        return response.data;
+        const url = `${API_URL}/${route}`;
+        return await axios.post(url, loginData);
     } catch (error) {
         handleLoginError(error);
         return undefined;

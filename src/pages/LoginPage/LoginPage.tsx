@@ -1,42 +1,54 @@
 import React, { useState } from "react";
 import { Container, Form, Button, Spinner } from "react-bootstrap";
 import { login } from "../../api/auth.ts";
-import "./LoginPageCSS.css";
 import Swal from "sweetalert2";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import "./LoginPageCSS.css";
+import getAuthToken from "../../utils/authToken.ts";
 
 const LoginPage: React.FC = () => {
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const navigate = useNavigate();
 
     const showAlert = async (title: string, text: string, icon: "success" | "error") => {
-        await Swal.fire({
-            title,
-            text,
-            icon,
-            confirmButtonText: "Okay"
-        });
+        await Swal.fire({ title, text, icon, confirmButtonText: "Okay" });
     };
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setIsLoading(true);
+        const postData = { username, password };
+
         try {
-            const response = await login(username, password);
-            if (response) {
+            const response = await login("login", postData);
+            if (response && response.status === 200) {
+                const token = response.data.token;
+                sessionStorage.setItem("token", token);
                 await showAlert("Login Successful!", "Welcome back!", "success");
-                navigate("/admin");
+
+                const token_parsed = getAuthToken();
+
+                if (token_parsed.role === "admin") {
+                    console.log({"admin": token_parsed.role});
+                    window.location.href = "/admin"; // Redirige a admin
+                }
+                if (token_parsed.role === "student") {
+                    console.log({"student": token_parsed.role});
+                    window.location.href = "/student"; // Redirige a student
+                }
+                if (token_parsed.role === "teacher") {
+                    console.log({"teacher": token_parsed.role});
+                    window.location.href = "/teacher"; // Redirige a teacher
+                }
+
             }
+
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                const errorMessage = error.response?.data?.message || "Invalid username or password.";
-                await showAlert("Login Failed!", errorMessage, "error");
-            } else {
-                await showAlert("An error occurred!", "Please try again later.", "error");
-            }
+            const errorMessage = axios.isAxiosError(error)
+                ? error.response?.data?.message || "Invalid username or password."
+                : "Please try again later.";
+            await showAlert("Login Failed!", errorMessage, "error");
         } finally {
             setIsLoading(false);
         }
