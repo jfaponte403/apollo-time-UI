@@ -9,19 +9,6 @@ interface PrivateRouteProps {
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ isAuthenticated, userRole, allowedRoles }) => {
     if (!isAuthenticated) {
-        console.log(isAuthenticated)
-        console.log(userRole)
-        console.log(allowedRoles)
-
-        console.log(isAuthenticated)
-        console.log(userRole)
-        console.log(allowedRoles)
-
-        console.log(isAuthenticated)
-        console.log(userRole)
-        console.log(allowedRoles)
-
-
         return <Navigate to="/" replace />;
     }
 
