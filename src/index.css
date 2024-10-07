@@ -46,3 +46,23 @@ h3 {
   color: #6c757d; /* Darker gray for h3 */
   margin-bottom: 5px; /* Space below */
 }
+
+.green-button {
+  background-color: var(--color-green) !important;
+  color: white !important; /* Optional: Change text color to white */
+  border: none; /* Optional: Remove border */
+}
+
+.green-button:hover {
+  background-color: darkgreen !important; /* Optional: Darker shade on hover */
+}
+
+.error-button {
+  background-color: var(--color-red) !important;
+  color: white !important; /* Optional: Change text color to white */
+  border: none; /* Optional: Remove border */
+}
+
+.error-button:hover {
+  background-color: #c50000 !important; /* Optional: Darker shade on hover */
+}

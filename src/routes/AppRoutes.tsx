@@ -6,6 +6,7 @@ import AdminPage from '../pages/AdminPage/AdminPage';
 import TeacherPage from '../pages/TeacherPage/TeacherPage';
 import StudentPage from '../pages/StudentPage/StudentPage';
 import getAuthToken, {AuthToken} from "../utils/authToken.ts";
+import DegreeManagementPage from "../pages/AdminPage/DegreeManagementPage.tsx";
 
 const AppRoutes: React.FC = () => {
     const authToken: AuthToken = getAuthToken();
@@ -14,6 +15,7 @@ const AppRoutes: React.FC = () => {
             <Routes>
                 <Route path="/" element={<LoginPage />} />
                 <Route path="/login" element={<LoginPage />} />
+                {/* Admin Routes */}
                 <Route
                     path="/admin"
                     element={
@@ -24,8 +26,15 @@ const AppRoutes: React.FC = () => {
                         />
                     }
                 >
-                    <Route index element={<AdminPage />} />
+                    <Route path="" element={<AdminPage />}>
+                        <Route path="profile" element={<>test -----------------------------------------------------------------------------------------</>} />
+                        <Route path="users" element={<>test</>} />
+                        <Route path="teachers" element={<>test</>} />
+                        <Route path="degrees" element={<DegreeManagementPage />} />
+                    </Route>
                 </Route>
+
+
                 <Route
                     path="/teacher"
                     element={
