@@ -8,8 +8,9 @@ interface ApiResponse<T> {
     status: number;
 }
 
-const apiRequest = async <T>(method: 'GET' | 'POST' | 'PUT' | 'DELETE', endpoint: string, payload?: any): Promise<ApiResponse<T>> => {
+const apiRequest = async <T>(method: 'GET' | 'POST' | 'PUT' | 'DELETE', endpoint: string, payload?: unknown): Promise<ApiResponse<T>> => {
     const url = `${API_URL}${endpoint}`;
+
     const config = {
         method,
         url,
@@ -18,14 +19,13 @@ const apiRequest = async <T>(method: 'GET' | 'POST' | 'PUT' | 'DELETE', endpoint
 
     const response: AxiosResponse<T> = await axios(config);
 
-    // Return the response data along with the status code
     return {
         data: response.data,
         status: response.status,
     } as ApiResponse<T>;
 };
 
-export const createResource = async <T>(endpoint: string, payload: any): Promise<ApiResponse<T>> => {
+export const createResource = async <T>(endpoint: string, payload: unknown): Promise<ApiResponse<T>> => {
     return apiRequest<T>('POST', endpoint, payload);
 };
 
@@ -33,10 +33,10 @@ export const readResource = async <T>(endpoint: string): Promise<ApiResponse<T>>
     return apiRequest<T>('GET', endpoint);
 };
 
-export const updateResource = async <T>(endpoint: string, payload: any): Promise<ApiResponse<T>> => {
+export const updateResource = async <T>(endpoint: string, payload: unknown): Promise<ApiResponse<T>> => {
     return apiRequest<T>('PUT', endpoint, payload);
 };
 
-export const deleteResource = async (endpoint: string): Promise<void> => {
-    await apiRequest<void>('DELETE', endpoint);
+export const deleteResource = async (endpoint: string): Promise<ApiResponse<Response>> => {
+    return await apiRequest<Response>('DELETE', endpoint);
 };

@@ -59,13 +59,13 @@ const LoginPage: React.FC = () => {
     };
 
     return (
-        <Container className="d-flex justify-content-center align-items-center" style={{minHeight: '100vh'}}>
-            <div className="center-container">
+        <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
+            <div className="login-container">
                 <Form onSubmit={handleSubmit}>
                     <h1 className="text-center mb-4">Login</h1>
                     <Form.Group controlId="formBasicUsername" className="mb-3">
-                        <div className="input-icon">
-                            <i className="fas fa-user"/>
+                        <div className="input-wrapper">
+                            <i className="fas fa-user input-icon" />
                             <Form.Control
                                 type="text"
                                 placeholder="Enter username"
@@ -76,8 +76,8 @@ const LoginPage: React.FC = () => {
                         </div>
                     </Form.Group>
                     <Form.Group controlId="formBasicPassword" className="mb-3">
-                        <div className="input-icon">
-                            <i className="fas fa-lock"/>
+                        <div className="input-wrapper">
+                            <i className="fas fa-lock input-icon" />
                             <Form.Control
                                 type="password"
                                 placeholder="Enter password"
@@ -88,10 +88,10 @@ const LoginPage: React.FC = () => {
                         </div>
                     </Form.Group>
                     <div className="text-center">
-                        <Button variant="primary" type="submit" className="btn-login" disabled={isLoading}>
+                        <Button variant="primary" type="submit" className="login-button" disabled={isLoading}>
                             {isLoading ? (
                                 <>
-                                    <Spinner animation="border" size="sm"/> Logging in...
+                                    <Spinner animation="border" size="sm" /> Logging in...
                                 </>
                             ) : (
                                 "Login"
@@ -101,6 +101,7 @@ const LoginPage: React.FC = () => {
                 </Form>
             </div>
         </Container>
+
     );
 };
 

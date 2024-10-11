@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Container, Button } from 'react-bootstrap';
-import DegreeForm from '../../components/degrees/DegreeForm/DegreeForm';
+import DegreeForm from '../../../components/Degrees/DegreeForm/DegreeForm.tsx';
 import './DegreeManagementPage.css'; // Import the CSS for additional styling
 
 const DegreeManagementPage: React.FC = () => {
