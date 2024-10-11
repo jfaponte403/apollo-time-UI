@@ -1,0 +1,44 @@
+.modal-content {
+    padding: 20px;
+    border-radius: 10px;
+    background-color: var(--color-white-soft);
+    border: 1px solid var(--color-gray-light);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.modal-title {
+    margin-top: 0;
+    font-weight: bold;
+    color: var(--color-black-soft);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-control {
+    margin-bottom: 20px;
+}
+
+/* New styles for labels */
+.form-group label {
+    font-weight: 600; /* Make the label text bold */
+    color: var(--color-black-soft); /* Change label color */
+    margin-bottom: 5px; /* Add space below the label */
+    display: block; /* Ensure labels occupy full width */
+}
+
+@media (max-width: 576px) {
+    .modal-content {
+        padding: 15px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
