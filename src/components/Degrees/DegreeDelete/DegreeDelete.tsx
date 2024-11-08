@@ -1,34 +1,33 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import './TeacherDelete.css';
 import Swal from "sweetalert2";
 import { deleteResource } from "../../../api/api.ts";
 
-interface TeacherDeleteProps {
+interface DegreeDeleteProps {
     isOpen: boolean;
     onClose: () => void;
-    teacherId: string;
-    teacherName: string;
-    onTeacherDeleted: (id: string) => void; // Added prop
+    degreeId: string;
+    degreeName: string;
+    onDegreeDeleted: (id: string) => void; // Added prop
 }
 
-const TeacherDelete: React.FC<TeacherDeleteProps> = ({ isOpen, onClose, teacherId, teacherName, onTeacherDeleted }) => {
+const DegreeDelete: React.FC<DegreeDeleteProps> = ({ isOpen, onClose, degreeId, degreeName, onDegreeDeleted }) => {
 
     const handleDelete = async () => {
         try {
-            const response = await deleteResource(`/teacher/${teacherId}`);
+            const response = await deleteResource(`/degree/${degreeId}`);
 
             if (response.status === 204) {
                 await Swal.fire({
                     icon: 'success',
                     title: 'Deleted!',
-                    text: `${teacherName} has been deleted successfully.`,
+                    text: `${degreeName} has been deleted successfully.`,
                     confirmButtonText: 'Okay',
                     customClass: {
                         confirmButton: 'green-button'
                     }
                 });
-                onTeacherDeleted(teacherId);
+                onDegreeDeleted(degreeId);
                 onClose();
             } else {
                 throw new Error('Deletion failed');
@@ -37,7 +36,7 @@ const TeacherDelete: React.FC<TeacherDeleteProps> = ({ isOpen, onClose, teacherI
             await Swal.fire({
                 icon: 'error',
                 title: 'Error!',
-                text: 'An error occurred while deleting the teacher.',
+                text: 'An error occurred while deleting the degree.',
                 customClass: {
                     confirmButton: 'error-button'
                 }
@@ -51,7 +50,7 @@ const TeacherDelete: React.FC<TeacherDeleteProps> = ({ isOpen, onClose, teacherI
                 <Modal.Title>Confirm Deletion</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <p>Are you sure you want to delete <strong>{teacherName}</strong>? This action cannot be undone.</p>
+                <p>Are you sure you want to delete <strong>{degreeName}</strong>? This action cannot be undone.</p>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={onClose}>
@@ -65,4 +64,4 @@ const TeacherDelete: React.FC<TeacherDeleteProps> = ({ isOpen, onClose, teacherI
     );
 };
 
-export default TeacherDelete;
+export default DegreeDelete;

@@ -10,3 +10,8 @@
     border-color: #218838 !important;
     transition: 200ms !important;
 }
+
+.table-custom tbody tr.inactive {
+    background-color: #f8d7da !important;
+    color: #721c24 !important;
+}
