@@ -26,6 +26,7 @@ interface ResponseStudentForm {
 interface Degree {
     id: string;
     name: string;
+    is_active: string;
 }
 
 interface GetDegreeResponse {
@@ -154,11 +155,13 @@ const StudentForm: React.FC<TeacherFormProps> = ({ isOpen, onClose }) => {
                             onChange={(e) => setDegreeId(e.target.value)}
                         >
                             <option value="">Select Degree</option>
-                            {degrees.map(degree => (
-                                <option key={degree.id} value={degree.id}>
-                                    {degree.name}
-                                </option>
-                            ))}
+                            {degrees.map(degree =>
+                                    degree.is_active && (
+                                        <option key={degree.id} value={degree.id}>
+                                            {degree.name}
+                                        </option>
+                                    )
+                            )}
                         </Form.Control>
                     </Form.Group>
                     <div className="d-flex justify-content-between mt-3">

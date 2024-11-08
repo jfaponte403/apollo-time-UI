@@ -4,12 +4,14 @@ import { readResource } from "../../../api/api.ts";
 import './TeacherAdminPage.css';
 import TeacherForm from "../../../components/Teachers/TeacherForm/TeacherForm.tsx";
 import TeacherDelete from "../../../components/Teachers/TeacherDelete/TeacherDelete.tsx";
+import TeacherModify from "../../../components/Teachers/TeacherModify/TeacherModify.tsx";
 
 interface Teacher {
     user_id: string;
     teacher_id: string;
     user_name: string;
     specialization: string;
+    is_active: boolean;
 }
 
 const TeacherAdminPage: React.FC = () => {
@@ -19,40 +21,44 @@ const TeacherAdminPage: React.FC = () => {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [selectedTeacherName, setSelectedTeacherName] = useState('');
     const [selectedTeacherId, setSelectedTeacherId] = useState('');
+    const [showModifyModal, setShowModifyModal] = useState<boolean>(false);
+    const [showAllTeachers, setShowAllTeachers] = useState(false);
+
+    const fetchTeachers = async () => {
+        try {
+            const response = await readResource('/teacher');
+            const teachersData = response.data as Teacher[];
+            console.log(teachersData)
+            setTeachers(teachersData);
+        } catch (error) {
+            console.error("Failed to fetch teachers:", error);
+        }
+    };
 
     useEffect(() => {
-        const fetchTeachers = async () => {
-            try {
-                const response = await readResource('/teacher');
-                const teachersData = response.data as Teacher[];
-                setTeachers(teachersData);
-            } catch (error) {
-                console.error("Failed to fetch teachers:", error);
-            }
-        };
-
         fetchTeachers();
     }, []);
 
-    const handleModify = (id: string) => {
-        console.log(`Modifying teacher with id: ${id}`);
+    const toggleShowAllTeachers = () => {
+        setShowAllTeachers(!showAllTeachers);
     };
 
     const handleCreate = () => {
         setShowTeacherForm(true);
     };
 
-    const handleCloseTeacherForm = () => {
+    const handleCloseTeacherForm = async () => {
         setShowTeacherForm(false);
+        await fetchTeachers();
     };
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
     };
 
-    const filteredTeachers = teachers.filter(teacher =>
-        teacher.user_name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    const filteredTeachers = teachers
+        .filter(teacher => showAllTeachers || teacher.is_active)
+        .filter(teacher => teacher.user_name.toLowerCase().includes(searchTerm.toLowerCase()));
 
     const handleDelete = (id: string, name: string) => {
         setSelectedTeacherId(id);
@@ -60,13 +66,24 @@ const TeacherAdminPage: React.FC = () => {
         setShowDeleteModal(true);
     };
 
-    const handleCloseDeleteModal = () => {
+    const handleCloseDeleteModal = async () => {
         setShowDeleteModal(false);
+        await fetchTeachers();
+    };
+
+    const handleCloseModifyModal = async () => {
+        setShowModifyModal(false);
+        await fetchTeachers();
     };
 
     const handleTeacherDeleted = (id: string) => {
         setTeachers(prevTeachers => prevTeachers.filter(teacher => teacher.teacher_id !== id));
         handleCloseDeleteModal();
+    };
+
+    const handleModify = (id: string) => {
+        setSelectedTeacherId(id);
+        setShowModifyModal(true);
     };
 
     return (
@@ -83,6 +100,11 @@ const TeacherAdminPage: React.FC = () => {
                 teacherId={selectedTeacherId}
                 onTeacherDeleted={handleTeacherDeleted}
             />
+            <TeacherModify
+                isOpen={showModifyModal}
+                onClose={handleCloseModifyModal}
+                id={selectedTeacherId}
+            />
             <Form.Control
                 type="text"
                 placeholder="Search by name"
@@ -90,6 +112,9 @@ const TeacherAdminPage: React.FC = () => {
                 onChange={handleSearchChange}
                 className="mb-3"
             />
+            <Button variant="secondary" onClick={toggleShowAllTeachers} className="mb-3">
+                {showAllTeachers ? "Show Only Active" : "Show All"}
+            </Button>
             <Table className="table-custom" striped bordered hover>
                 <thead>
                 <tr>

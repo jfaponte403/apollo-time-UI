@@ -2,14 +2,15 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './SidebarAdmin.css';
 import { Nav } from 'react-bootstrap';
-import {FaUserCircle, FaChalkboardTeacher, FaGraduationCap, FaUserGraduate, FaSignOutAlt} from 'react-icons/fa';
+import {FaUserCircle, FaChalkboardTeacher, FaGraduationCap, FaUserGraduate, FaSignOutAlt, FaBook} from 'react-icons/fa';
 
 const SidebarAdmin: React.FC = () => {
     const navItems = [
         { path: 'profile', label: 'Profile', icon: <FaUserCircle /> },
         { path: 'teachers', label: 'Teachers', icon: <FaChalkboardTeacher /> },
         { path: 'degrees', label: 'Degrees', icon: <FaGraduationCap /> },
-        { path: 'students', label: 'Students', icon: <FaUserGraduate /> }
+        { path: 'students', label: 'Students', icon: <FaUserGraduate /> },
+        { path: 'courses', label: 'Courses', icon: <FaBook /> }
     ];
 
     const handleLogout = () => {
