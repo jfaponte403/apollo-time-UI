@@ -1,33 +1,37 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal, Form } from 'react-bootstrap';
 import Swal from "sweetalert2";
 import { deleteResource } from "../../../api/api.ts";
+import { Degree } from "../../../interfaces/Degree.ts";
+import SubmitButton from "../../Buttons/SubmitButton.tsx";
+import CancelButton from "../../Buttons/CancelButton.tsx";
 
 interface DegreeDeleteProps {
     isOpen: boolean;
     onClose: () => void;
-    degreeId: string;
-    degreeName: string;
-    onDegreeDeleted: (id: string) => void; // Added prop
+    degree: Degree;
+    onCreateSuccess: () => void;
 }
 
-const DegreeDelete: React.FC<DegreeDeleteProps> = ({ isOpen, onClose, degreeId, degreeName, onDegreeDeleted }) => {
+const DegreeDelete: React.FC<DegreeDeleteProps> = ({ isOpen, onClose, degree, onCreateSuccess }) => {
 
-    const handleDelete = async () => {
+    const handleDelete = async (e: React.FormEvent) => {
+        e.preventDefault();
+
         try {
-            const response = await deleteResource(`/degree/${degreeId}`);
+            const response = await deleteResource(`/degree/${degree.id}`);
 
             if (response.status === 204) {
                 await Swal.fire({
                     icon: 'success',
                     title: 'Deleted!',
-                    text: `${degreeName} has been deleted successfully.`,
+                    text: `${degree.name} has been deleted successfully.`,
                     confirmButtonText: 'Okay',
                     customClass: {
                         confirmButton: 'green-button'
                     }
                 });
-                onDegreeDeleted(degreeId);
+                onCreateSuccess();
                 onClose();
             } else {
                 throw new Error('Deletion failed');
@@ -50,16 +54,18 @@ const DegreeDelete: React.FC<DegreeDeleteProps> = ({ isOpen, onClose, degreeId, 
                 <Modal.Title>Confirm Deletion</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <p>Are you sure you want to delete <strong>{degreeName}</strong>? This action cannot be undone.</p>
+                <Form onSubmit={handleDelete}>
+                    <p>Are you sure you want to delete <strong>{degree.name}</strong>? This action cannot be undone.</p>
+                    <SubmitButton
+                        text_button="Delete"
+                        type="submit"
+                    />
+                    <CancelButton
+                        text_button="Cancel"
+                        onPress={onClose}
+                    />
+                </Form>
             </Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary" onClick={onClose}>
-                    Cancel
-                </Button>
-                <Button variant="danger" onClick={handleDelete}>
-                    Confirm
-                </Button>
-            </Modal.Footer>
         </Modal>
     );
 };

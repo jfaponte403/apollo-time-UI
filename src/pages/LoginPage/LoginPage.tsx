@@ -1,53 +1,35 @@
-import React, {useState} from "react";
-import {Container, Form, Button, Spinner} from "react-bootstrap";
-import {login} from "../../api/auth.ts";
+import React, { useState } from "react";
+import { Container, Form } from "react-bootstrap";
+import { login } from "../../api/auth.ts";
 import Swal from "sweetalert2";
 import axios from "axios";
-import "./LoginPageCSS.css";
+import { FaUser, FaLock } from 'react-icons/fa'; // Importing icons from react-icons/fa
 import getAuthToken from "../../utils/authToken.ts";
+import LoginButton from "../../components/Buttons/LoginButton.tsx";
+import "./LoginPage.css";
 
 const LoginPage: React.FC = () => {
-    const [username, setUsername] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     const showAlert = async (title: string, text: string, icon: "success" | "error", customClass: string) => {
-        await Swal.fire({
-            title, text, icon, confirmButtonText: "Okay", customClass: {
-                confirmButton: customClass // Use the custom class here
-            }
-        });
+        await Swal.fire({ title, text, icon, confirmButtonText: "Okay", customClass: { confirmButton: customClass } });
     };
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setIsLoading(true);
-        const postData = {username, password};
-
         try {
-            const response = await login("login", postData);
-            if (response && response.status === 200) {
-                const token = response.data.token;
-                sessionStorage.setItem("token", token);
+            const response = await login("login", { username, password });
+            if (response?.status === 200 && response.data) {
+                sessionStorage.setItem("token", response.data.token);
                 await showAlert("Login Successful!", "Welcome back!", "success", "green-button");
 
-                const token_parsed = getAuthToken();
-
-                if (token_parsed.role === "admin") {
-                    console.log({"admin": token_parsed.role});
-                    window.location.href = "/admin"; // Redirige a admin
-                }
-                if (token_parsed.role === "student") {
-                    console.log({"student": token_parsed.role});
-                    window.location.href = "/student"; // Redirige a student
-                }
-                if (token_parsed.role === "teacher") {
-                    console.log({"teacher": token_parsed.role});
-                    window.location.href = "/teacher"; // Redirige a teacher
-                }
-
+                const { role } = getAuthToken();
+                const roleRoutes: Record<string, string> = { admin: "/admin", student: "/student", teacher: "/teacher" };
+                window.location.href = roleRoutes[role] || "/";  // Redirect based on role
             }
-
         } catch (error) {
             const errorMessage = axios.isAxiosError(error)
                 ? error.response?.data?.message || "Invalid username or password."
@@ -65,7 +47,7 @@ const LoginPage: React.FC = () => {
                     <h1 className="text-center mb-4">Login</h1>
                     <Form.Group controlId="formBasicUsername" className="mb-3">
                         <div className="input-wrapper">
-                            <i className="fas fa-user input-icon" />
+                            <FaUser className="input-icon" />
                             <Form.Control
                                 type="text"
                                 placeholder="Enter username"
@@ -77,7 +59,7 @@ const LoginPage: React.FC = () => {
                     </Form.Group>
                     <Form.Group controlId="formBasicPassword" className="mb-3">
                         <div className="input-wrapper">
-                            <i className="fas fa-lock input-icon" />
+                            <FaLock className="input-icon" />
                             <Form.Control
                                 type="password"
                                 placeholder="Enter password"
@@ -88,20 +70,11 @@ const LoginPage: React.FC = () => {
                         </div>
                     </Form.Group>
                     <div className="text-center">
-                        <Button variant="primary" type="submit" className="login-button" disabled={isLoading}>
-                            {isLoading ? (
-                                <>
-                                    <Spinner animation="border" size="sm" /> Logging in...
-                                </>
-                            ) : (
-                                "Login"
-                            )}
-                        </Button>
+                        <LoginButton text_button="Login" type="submit" isLoading={isLoading} />
                     </div>
                 </Form>
             </div>
         </Container>
-
     );
 };
 

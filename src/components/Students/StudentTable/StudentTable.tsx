@@ -1,22 +1,20 @@
-import { Button, Form, Table } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import React, { useEffect, useState } from "react";
 import { readResource } from "../../../api/api.ts";
 import { Student } from "../../../interfaces/Student.ts";
+import ModifyButton from "../../Buttons/ModifyButton.tsx";
+import DeleteButton from "../../Buttons/DeleteButton.tsx";
 
 interface Props {
-    onModify: (student: Student) => void;
-    onDelete: (student: Student) => void;
-    setFetchStudentsRef: (fetchStudents: () => void) => void;
+    searchValue: string;
+    isActive: boolean;
+    refreshKey: boolean;
+    onModify: (value: Student) => void;
+    onDelete: (value: Student) => void;
 }
 
-const StudentTable: React.FC<Props> = ({ onModify, onDelete, setFetchStudentsRef }) => {
+const StudentTable: React.FC<Props> = ({ searchValue, isActive, refreshKey, onModify, onDelete }) => {
     const [students, setStudents] = useState<Student[]>([]);
-    const [showAllStudents, setShowAllStudents] = useState(false);
-    const [searchTerm, setSearchTerm] = useState("");
-
-    const filteredStudents = students
-        .filter(student => showAllStudents || student.is_active)
-        .filter(student => student.user_name.toLowerCase().includes(searchTerm.toLowerCase()));
 
     const fetchStudents = async () => {
         try {
@@ -31,65 +29,38 @@ const StudentTable: React.FC<Props> = ({ onModify, onDelete, setFetchStudentsRef
 
     useEffect(() => {
         fetchStudents();
-        setFetchStudentsRef(fetchStudents);
-    }, []);
+    }, [refreshKey]);
 
-    const toggleShowAllStudents = () => {
-        setShowAllStudents(!showAllStudents);
-    };
-
-    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchTerm(event.target.value);
-    };
+    const filteredStudents = students.filter(student => {
+        const matchesSearch = student.user_name.toLowerCase().includes(searchValue.toLowerCase());
+        const matchesActive = isActive ? student.is_active : true;
+        return matchesSearch && matchesActive;
+    });
 
     return (
-        <>
-            <Form.Control
-                type="text"
-                placeholder="Search by name"
-                value={searchTerm}
-                onChange={handleSearchChange}
-                className="mb-3"
-            />
-            <Button variant="secondary" onClick={toggleShowAllStudents} className="mb-3">
-                {showAllStudents ? "Show Only Active" : "Show All"}
-            </Button>
-            <Table className="table-custom-degree" striped bordered hover>
-                <thead>
-                <tr>
-                    <th>Status</th>
-                    <th>Created at</th>
-                    <th>Name</th>
-                    <th>Actions</th>
+        <Table className="table-custom-degree" striped bordered hover>
+            <thead>
+            <tr>
+                <th>Created at</th>
+                <th>Status</th>
+                <th>Name</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {filteredStudents.map((student) => (
+                <tr key={student.student_id}>
+                    <td>{new Date(student.created_at).toLocaleDateString()}</td>
+                    <td>{student.is_active ? "Active" : "Inactive"}</td>
+                    <td>{student.user_name}</td>
+                    <td>
+                        <ModifyButton text_button="Modify" onPress={() => onModify(student)} />
+                        <DeleteButton text_button="Delete" onPress={() => onDelete(student)} />
+                    </td>
                 </tr>
-                </thead>
-                <tbody>
-                {filteredStudents.map((student) => (
-                    <tr key={student.student_id}>
-                        <td>{student.is_active ? "Active" : "Inactive"}</td>
-                        <td>{new Date(student.created_at).toLocaleDateString()}</td>
-                        <td>{student.user_name}</td>
-                        <td>
-                            <Button
-                                className="btn-custom-modify"
-                                size="sm"
-                                aria-label="Modify student"
-                                onClick={() => onModify(student)}>
-                                Modify
-                            </Button>
-                            <Button
-                                className="btn-custom-delete"
-                                size="sm"
-                                aria-label="Delete student"
-                                onClick={() => onDelete(student)}>
-                                Delete
-                            </Button>
-                        </td>
-                    </tr>
-                ))}
-                </tbody>
-            </Table>
-        </>
+            ))}
+            </tbody>
+        </Table>
     );
 };
 
