@@ -2,19 +2,34 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import './SidebarAdmin.css';
 import { Nav } from 'react-bootstrap';
-import {FaUserCircle, FaChalkboardTeacher, FaGraduationCap, FaUserGraduate, FaSignOutAlt, FaBook} from 'react-icons/fa';
+import LogoutButton from "../Buttons/LogoutButton.tsx";
+import {
+    FaChalkboardTeacher,
+    FaGraduationCap,
+    FaUserGraduate,
+    FaBook,
+    FaUsers,
+    FaClock,
+    FaListUl,
+    FaSchool
+} from 'react-icons/fa';
+
 
 const SidebarAdmin: React.FC = () => {
     const navItems = [
-        { path: 'profile', label: 'Profile', icon: <FaUserCircle /> },
+        { path: '', label: 'Admin', icon: <FaUsers /> },
         { path: 'teachers', label: 'Teachers', icon: <FaChalkboardTeacher /> },
-        { path: 'degrees', label: 'Degrees', icon: <FaGraduationCap /> },
         { path: 'students', label: 'Students', icon: <FaUserGraduate /> },
-        { path: 'courses', label: 'Courses', icon: <FaBook /> }
+        { path: 'courses', label: 'Courses', icon: <FaBook /> },
+        { path: 'degrees', label: 'Degrees', icon: <FaGraduationCap /> },
+        { path: 'schedules', label: 'Schedules', icon: <FaClock /> },
+        { path: 'subjects', label: 'Subjects', icon: <FaListUl /> },
+        { path: 'classrooms', label: 'Classrooms', icon: <FaSchool /> },
     ];
 
     const handleLogout = () => {
         sessionStorage.clear()
+        window.location.href = '/'
     }
 
     return (
@@ -23,7 +38,7 @@ const SidebarAdmin: React.FC = () => {
                 {navItems.map((item) => (
                     <NavLink
                         key={item.path}
-                        to={item.path} // Use relative paths
+                        to={item.path}
                         className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
                         aria-label={item.label}
                     >
@@ -32,14 +47,7 @@ const SidebarAdmin: React.FC = () => {
                 ))}
             </Nav>
             <Nav className="flex-column logout-wrapper">
-                <NavLink
-                    onClick={handleLogout}
-                    to="/login"
-                    className="nav-link button-logout"
-                    aria-label="Logout"
-                >
-                    <FaSignOutAlt /> Logout
-                </NavLink>
+                <LogoutButton text_button="Logout" onPress={handleLogout} />
             </Nav>
         </div>
     );

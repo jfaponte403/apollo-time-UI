@@ -1,5 +1,7 @@
 import { Button } from "react-bootstrap";
 import React from "react";
+import { FaPlus } from 'react-icons/fa';
+import "./ButtonStyle.css";
 
 interface Props {
     text_button: string;
@@ -8,8 +10,8 @@ interface Props {
 
 const CreateButton: React.FC<Props> = ({ text_button, onPress }) => {
     return (
-        <Button className="btn-custom-create" onClick={() => { onPress(true); }}>
-            {text_button}
+        <Button className="btn-create-custom" onClick={() => { onPress(true); }}>
+            <FaPlus className="mr-2" /> {text_button}
         </Button>
     );
 };

@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 interface TeacherFormProps {
     isOpen: boolean;
     onClose: () => void;
+    onCreateSuccess: () => void
 }
 
 interface PayloadCreateStudent {
@@ -33,7 +34,7 @@ interface GetDegreeResponse {
     degrees: Degree[];
 }
 
-const StudentForm: React.FC<TeacherFormProps> = ({ isOpen, onClose }) => {
+const StudentForm: React.FC<TeacherFormProps> = ({ isOpen, onClose, onCreateSuccess }) => {
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
@@ -81,6 +82,7 @@ const StudentForm: React.FC<TeacherFormProps> = ({ isOpen, onClose }) => {
                 setPhone('');
                 setGpa('');
                 setDegreeId('');
+                onCreateSuccess()
                 onClose();
             } else {
                 await Swal.fire({

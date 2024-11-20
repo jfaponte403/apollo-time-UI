@@ -8,9 +8,10 @@ interface Props {
     isOpen: boolean;
     onClose: () => void;
     student: Student;
+    onDeleteSuccess: () => void;
 }
 
-const StudentDelete: React.FC<Props> = ({ isOpen, onClose, student }) => {
+const StudentDelete: React.FC<Props> = ({ isOpen, onClose, student, onDeleteSuccess }) => {
 
     const handleDelete = async () => {
         try {
@@ -26,6 +27,7 @@ const StudentDelete: React.FC<Props> = ({ isOpen, onClose, student }) => {
                         confirmButton: 'green-button'
                     }
                 });
+                onDeleteSuccess()
                 onClose();
             } else {
                 throw new Error('Deletion failed');

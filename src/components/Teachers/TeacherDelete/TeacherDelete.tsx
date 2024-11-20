@@ -1,34 +1,34 @@
 import React from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import './TeacherDelete.css';
 import Swal from "sweetalert2";
 import { deleteResource } from "../../../api/api.ts";
+import './TeacherDelete.css';
+import {Teacher} from "../../../interfaces/Teacher.ts";
 
 interface TeacherDeleteProps {
     isOpen: boolean;
     onClose: () => void;
-    teacherId: string;
-    teacherName: string;
-    onTeacherDeleted: (id: string) => void; // Added prop
+    teacher: Teacher;
+    onDeleteSuccess: () => void;
 }
 
-const TeacherDelete: React.FC<TeacherDeleteProps> = ({ isOpen, onClose, teacherId, teacherName, onTeacherDeleted }) => {
+const TeacherDelete: React.FC<TeacherDeleteProps> = ({ isOpen, onClose, teacher, onDeleteSuccess }) => {
 
     const handleDelete = async () => {
         try {
-            const response = await deleteResource(`/teacher/${teacherId}`);
+            const response = await deleteResource(`/teacher/${teacher.teacher_id}`);
 
             if (response.status === 204) {
                 await Swal.fire({
                     icon: 'success',
                     title: 'Deleted!',
-                    text: `${teacherName} has been deleted successfully.`,
+                    text: `${teacher.user_name} has been deleted successfully.`,
                     confirmButtonText: 'Okay',
                     customClass: {
                         confirmButton: 'green-button'
                     }
                 });
-                onTeacherDeleted(teacherId);
+                onDeleteSuccess(); // Actualizado para usar onDeleteSuccess
                 onClose();
             } else {
                 throw new Error('Deletion failed');
@@ -51,7 +51,7 @@ const TeacherDelete: React.FC<TeacherDeleteProps> = ({ isOpen, onClose, teacherI
                 <Modal.Title>Confirm Deletion</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <p>Are you sure you want to delete <strong>{teacherName}</strong>? This action cannot be undone.</p>
+                <p>Are you sure you want to delete <strong>{teacher.user_name}</strong>? This action cannot be undone.</p>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={onClose}>

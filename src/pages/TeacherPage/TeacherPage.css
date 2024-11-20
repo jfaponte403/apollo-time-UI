@@ -1,0 +1,65 @@
+.teacher-page {
+    display: flex;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+.teacher-sidebar {
+    width: 250px;
+    background-color: #343a40;
+    color: white;
+    padding: 20px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    transition: width 0.3s ease;
+}
+
+.teacher-sidebar .nav-link {
+    color: white;
+    text-align: left;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.teacher-sidebar .nav-link:hover {
+    background-color: #495057;
+}
+
+.teacher-sidebar .active {
+    background-color: #007bff;
+}
+
+.teacher-page .content {
+    margin-left: 250px;
+    padding: 20px;
+    background-color: #ffffff;
+    flex-grow: 1;
+    transition: margin-left 0.3s ease;
+}
+
+.teacher-page .content .outlet {
+    padding-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .teacher-sidebar {
+        width: 200px;
+        position: relative;
+        height: auto;
+    }
+
+    .teacher-page .content {
+        margin-left: 0;
+    }
+}
+
+.teacher-page .content .card {
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}

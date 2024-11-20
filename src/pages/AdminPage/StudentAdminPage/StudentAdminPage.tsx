@@ -1,11 +1,14 @@
-import { Button, Container } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import React, { useState, useRef } from "react";
-import './StudentAdminPage.css';
 import StudentForm from "../../../components/Students/StudentForm/StudentForm.tsx";
 import StudentTable from "../../../components/Students/StudentTable/StudentTable.tsx";
 import StudentDelete from "../../../components/Students/StudentDelete/StudentDelete.tsx";
 import { Student } from "../../../interfaces/Student.ts";
 import StudentModify from "../../../components/Students/StudentModify/StudentModify.tsx";
+import Title from "../../../components/Title/Title.tsx";
+import CreateButton from "../../../components/Buttons/CreateButton.tsx";
+import SearchInput from "../../../components/SearchInput/SearchInput.tsx";
+import ActiveStatus from "../../../components/ActiveStatus/ActiveStatus.tsx";
 
 const StudentAdminPage: React.FC = () => {
     const [showStudentForm, setShowStudentForm] = useState(false);
@@ -22,6 +25,23 @@ const StudentAdminPage: React.FC = () => {
         is_active: true,
         created_at: ""
     });
+
+    const [searchValue, setSearchValue] = useState<string>("");
+    const [isActive, setIsActive] = useState<boolean>(true);
+
+    const [shouldRefreshTable, setShouldRefreshTable] = useState<boolean>(false);
+
+    const handleTableRefresh = () => {
+        setShouldRefreshTable((prev) => !prev);
+    };
+
+    const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchValue(event.target.value);
+    };
+
+    const handleToggleActiveStatus = () => {
+        setIsActive((prev) => !prev);
+    };
 
     const fetchStudentsRef = useRef<() => void>(() => {});
 
@@ -55,26 +75,32 @@ const StudentAdminPage: React.FC = () => {
     };
 
     return (
-        <Container className="container-custom mt-5">
-            <h1>Students Management</h1>
-            <Button className="btn-custom-create mb-3" onClick={handleCreate} aria-label="Create a new student">
-                Create Student
-            </Button>
+        <Container>
+
+            <Title text="Students Management" />
+            <CreateButton text_button="Add Student" onPress={handleCreate} />
+            <SearchInput value={searchValue} onChange={handleSearchChange} />
+            <ActiveStatus isActive={isActive} onToggle={handleToggleActiveStatus} />
+
             <StudentDelete
                 isOpen={showDeleteModal}
                 onClose={handleCloseDeleteModal}
                 student={selectStudent}
+                onDeleteSuccess={handleTableRefresh}
             />
-            <StudentForm isOpen={showStudentForm} onClose={handleCloseStudentForm} />
+            <StudentForm isOpen={showStudentForm} onClose={handleCloseStudentForm} onCreateSuccess={handleTableRefresh} />
             <StudentModify
                 isOpen={showModifyModal}
                 onClose={handleCloseModifyModal}
                 student={selectStudent}
+                onModifySuccess={handleTableRefresh}
             />
             <StudentTable
                 onModify={handleModifyStudent}
                 onDelete={handleDeleteStudent}
-                setFetchStudentsRef={(fetchStudents) => fetchStudentsRef.current = fetchStudents}
+                searchValue={searchValue}
+                isActive={isActive}
+                refreshKey={shouldRefreshTable}
             />
         </Container>
     );

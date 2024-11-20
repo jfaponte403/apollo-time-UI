@@ -1,27 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Button, Form } from 'react-bootstrap';
+import { Modal, Form } from 'react-bootstrap';
 import { updateResource } from "../../../api/api.ts";
 import Swal from "sweetalert2";
+import {Degree} from "../../../interfaces/Degree.ts";
+import SubmitButton from "../../Buttons/SubmitButton.tsx";
+import CancelButton from "../../Buttons/CancelButton.tsx";
 
 interface DegreeFormProps {
-    id: string;
     isOpen: boolean;
     onClose: () => void;
-    currentDegreeName: string; // New prop to pass the current degree name
+    degree: Degree;
+    onCreateSuccess: () => void;
 }
 
 interface PayloadModifyDegree {
     name: string;
 }
 
-const ModifyDegree: React.FC<DegreeFormProps> = ({ isOpen, onClose, id, currentDegreeName }) => {
+const DegreeModify: React.FC<DegreeFormProps> = ({ isOpen, onClose, degree, onCreateSuccess }) => {
     const [degreeName, setDegreeName] = useState('');
 
     useEffect(() => {
         if (isOpen) {
-            setDegreeName(currentDegreeName); // Load current degree name when modal opens
+            setDegreeName(degree.name); // Load current degree name when modal opens
         }
-    }, [isOpen, currentDegreeName]);
+    }, [isOpen, degree.name]);
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
@@ -31,7 +34,7 @@ const ModifyDegree: React.FC<DegreeFormProps> = ({ isOpen, onClose, id, currentD
         };
 
         try {
-            const response = await updateResource<PayloadModifyDegree>(`/degree/${id}`, payload);
+            const response = await updateResource<PayloadModifyDegree>(`/degree/${degree.id}`, payload);
 
             if (response.status === 200) { // Usually, updates return a 200 status
                 await Swal.fire({
@@ -43,7 +46,8 @@ const ModifyDegree: React.FC<DegreeFormProps> = ({ isOpen, onClose, id, currentD
                         confirmButton: 'green-button'
                     }
                 });
-                setDegreeName(''); // Clear the input after successful submission
+                setDegreeName('');
+                onCreateSuccess();// Clear the input after successful submission
                 onClose(); // Close the modal
             } else {
                 await Swal.fire({
@@ -85,12 +89,14 @@ const ModifyDegree: React.FC<DegreeFormProps> = ({ isOpen, onClose, id, currentD
                         />
                     </Form.Group>
                     <div className="d-flex justify-content-between">
-                        <Button variant="primary" type="submit">
-                            Submit
-                        </Button>
-                        <Button variant="secondary" onClick={onClose}>
-                            Cancel
-                        </Button>
+                        <SubmitButton
+                            text_button="Modify"
+                            type="submit"
+                        />
+                        <CancelButton
+                            text_button="Cancel"
+                            onPress={onClose}
+                        />
                     </div>
                 </Form>
             </Modal.Body>
@@ -98,4 +104,4 @@ const ModifyDegree: React.FC<DegreeFormProps> = ({ isOpen, onClose, id, currentD
     );
 };
 
-export default ModifyDegree;
+export default DegreeModify;

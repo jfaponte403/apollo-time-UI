@@ -10,29 +10,17 @@
     top: 0;
     left: 0;
     bottom: 0;
+    transform: translateX(0);
     transition: transform 0.3s ease;
 }
 
 .content {
     margin-left: 250px;
-    padding: 20px;
     flex: 1;
+    padding: 20px;
     overflow: auto;
-    transition: margin-left 0.3s ease;
-}
-
-@media (max-width: 768px) {
-    .sidebar {
-        transform: translateX(-100%);
-    }
-
-    .sidebar.open {
-        transform: translateX(0);
-    }
-
-    .content {
-        margin-left: 0;
-    }
+    background-color: #f9f9f9;
+    transition: margin-left 0.3s ease, background-color 0.3s ease;
 }
 
 .toggle-button {
@@ -47,6 +35,18 @@
 }
 
 @media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .content {
+        margin-left: 0;
+    }
+
     .toggle-button {
         display: block;
     }

@@ -1,0 +1,50 @@
+.admin-dashboard {
+    padding: 20px;
+}
+
+.admin-dashboard h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.admin-dashboard p {
+    font-size: 1.2rem;
+    color: #6c757d;
+}
+
+.stats-row {
+    margin-top: 30px;
+}
+
+.stats-row .card {
+    margin-bottom: 20px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    color: #007bff;
+}
+
+.card-text {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #343a40;
+}
+
+.mt-5 {
+    margin-top: 40px;
+}
+
+button {
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .stats-row .col-sm-4 {
+        margin-bottom: 15px;
+    }
+}

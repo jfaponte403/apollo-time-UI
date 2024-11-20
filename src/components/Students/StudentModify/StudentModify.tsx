@@ -8,6 +8,7 @@ interface Props {
     student: Student;
     isOpen: boolean;
     onClose: () => void;
+    onModifySuccess: () => void;
 }
 
 interface PayloadModifyStudent {
@@ -22,7 +23,7 @@ interface PayloadModifyStudent {
     password: string;
 }
 
-const StudentModify: React.FC<Props> = ({ isOpen, onClose, student }) => {
+const StudentModify: React.FC<Props> = ({ isOpen, onClose, student, onModifySuccess }) => {
     const [formData, setFormData] = useState<PayloadModifyStudent>({
         user_id: student.user_id,
         degree_id: student.degree_id,
@@ -57,6 +58,7 @@ const StudentModify: React.FC<Props> = ({ isOpen, onClose, student }) => {
                         confirmButton: 'green-button'
                     }
                 });
+                onModifySuccess();
                 onClose();
             } else {
                 await Swal.fire({

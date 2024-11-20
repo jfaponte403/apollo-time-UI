@@ -1,12 +1,15 @@
-import React, {useState} from 'react';
-import {Modal, Button, Form} from 'react-bootstrap';
-import './TeacherForm.css'; // Import your CSS file here
-import {createResource} from "../../../api/api.ts";
+import React, { useState } from 'react';
+import { Modal, Form } from 'react-bootstrap';
+import './TeacherForm.css';
+import { createResource } from "../../../api/api.ts";
 import Swal from "sweetalert2";
+import SubmitButton from "../../Buttons/SubmitButton.tsx";
+import CancelButton from "../../Buttons/CancelButton.tsx";
 
 interface TeacherFormProps {
     isOpen: boolean;
     onClose: () => void;
+    onCreateSuccess: () => void;
 }
 
 interface PayloadCreateTeacher {
@@ -18,31 +21,33 @@ interface PayloadCreateTeacher {
 }
 
 interface ResponseTeacherForm {
-    "message": string,
-    "username": string,
-    "password": string
+    message: string;
+    username: string;
+    password: string;
 }
 
-const TeacherForm: React.FC<TeacherFormProps> = ({isOpen, onClose}) => {
-    const [fullName, setFullName] = useState('');
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
-    const [specialization, setSpecialization] = useState('');
-    const [salary, setSalary] = useState<number | string>('');
+const TeacherForm: React.FC<TeacherFormProps> = ({ isOpen, onClose, onCreateSuccess }) => {
+    const [formData, setFormData] = useState<PayloadCreateTeacher>({
+        name: '',
+        email: '',
+        phone_number: '',
+        specialization: '',
+        salary: 0,
+    });
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: name === 'salary' ? Number(value) : value,
+        }));
+    };
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
 
-        const payload: PayloadCreateTeacher = {
-            name: fullName,
-            email,
-            phone_number: phone,
-            specialization,
-            salary: Number(salary)
-        };
-
         try {
-            const response = await createResource<ResponseTeacherForm>("/teacher", payload);
+            const response = await createResource<ResponseTeacherForm>("/teacher", formData);
 
             if (response.status === 201) {
                 await Swal.fire({
@@ -55,16 +60,19 @@ const TeacherForm: React.FC<TeacherFormProps> = ({isOpen, onClose}) => {
                     `,
                     confirmButtonText: 'Okay',
                     customClass: {
-                        confirmButton: 'green-button'
-                    }
+                        confirmButton: 'green-button',
+                    },
                 });
 
+                setFormData({
+                    name: '',
+                    email: '',
+                    phone_number: '',
+                    specialization: '',
+                    salary: 0,
+                });
 
-                setFullName('');
-                setEmail('');
-                setPhone('');
-                setSpecialization('');
-                setSalary('');
+                onCreateSuccess();
                 onClose();
             } else {
                 await Swal.fire({
@@ -72,8 +80,8 @@ const TeacherForm: React.FC<TeacherFormProps> = ({isOpen, onClose}) => {
                     title: 'Error!',
                     text: 'Failed to create teacher. Please try again.',
                     customClass: {
-                        confirmButton: 'error-button'
-                    }
+                        confirmButton: 'error-button',
+                    },
                 });
             }
         } catch {
@@ -82,8 +90,8 @@ const TeacherForm: React.FC<TeacherFormProps> = ({isOpen, onClose}) => {
                 title: 'Error!',
                 text: 'An error occurred while creating the teacher.',
                 customClass: {
-                    confirmButton: 'error-button'
-                }
+                    confirmButton: 'error-button',
+                },
             });
         }
     };
@@ -95,58 +103,21 @@ const TeacherForm: React.FC<TeacherFormProps> = ({isOpen, onClose}) => {
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
-                    <Form.Group controlId="fullName">
-                        <Form.Control
-                            type="text"
-                            required
-                            placeholder="Full Name"
-                            value={fullName}
-                            onChange={(e) => setFullName(e.target.value)}
-                        />
-                    </Form.Group>
-                    <Form.Group controlId="email">
-                        <Form.Control
-                            type="email"
-                            required
-                            placeholder="Email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-                    </Form.Group>
-                    <Form.Group controlId="phone">
-                        <Form.Control
-                            type="tel"
-                            required
-                            placeholder="Phone"
-                            value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
-                        />
-                    </Form.Group>
-                    <Form.Group controlId="specialization">
-                        <Form.Control
-                            type="text"
-                            required
-                            placeholder="Specialization"
-                            value={specialization}
-                            onChange={(e) => setSpecialization(e.target.value)}
-                        />
-                    </Form.Group>
-                    <Form.Group controlId="salary">
-                        <Form.Control
-                            type="number"
-                            required
-                            placeholder="Salary"
-                            value={salary}
-                            onChange={(e) => setSalary(e.target.value)}
-                        />
-                    </Form.Group>
+                    {['name', 'email', 'phone_number', 'specialization', 'salary'].map((field, index) => (
+                        <Form.Group controlId={field} key={index}>
+                            <Form.Control
+                                type={field === 'salary' ? 'number' : 'text'}
+                                name={field}
+                                value={formData[field as keyof PayloadCreateTeacher]}
+                                onChange={handleChange}
+                                required
+                                placeholder={field.charAt(0).toUpperCase() + field.slice(1).replace('_', ' ')}
+                            />
+                        </Form.Group>
+                    ))}
                     <div className="d-flex justify-content-between mt-3">
-                        <Button variant="primary" type="submit">
-                            Submit
-                        </Button>
-                        <Button variant="secondary" onClick={onClose}>
-                            Cancel
-                        </Button>
+                        <SubmitButton text_button="Submit" type="submit" />
+                        <CancelButton text_button="Cancel" onPress={onClose} />
                     </div>
                 </Form>
             </Modal.Body>
