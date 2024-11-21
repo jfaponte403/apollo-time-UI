@@ -1,0 +1,126 @@
+/* Sidebar styles */
+.sidebar {
+    background-color: #343a40;
+    color: white;
+    width: 250px;
+    height: 100vh;
+    padding: 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    transition: all 0.3s ease;
+    z-index: 1000; /* Asegurarse de que el sidebar se superponga al contenido */
+}
+
+.sidebar .nav-link {
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar .nav-link:hover {
+    background-color: #495057;
+}
+
+.sidebar .active {
+    background-color: #007bff;
+}
+
+.sidebar .nav-link .fa {
+    margin-right: 10px;
+}
+
+.sidebar .logout-wrapper {
+    margin-top: auto;
+    margin-bottom: 20px;
+}
+
+.sidebar .button-logout {
+    color: white;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar .button-logout:hover {
+    background-color: #dc3545;
+}
+
+/* Responsiveness */
+@media (max-width: 1200px) {
+    .sidebar {
+        width: 220px;
+    }
+}
+
+@media (max-width: 992px) {
+    .sidebar {
+        width: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* En pantallas pequeñas, el sidebar debe estar oculto por defecto y solo visible cuando se active */
+    .sidebar {
+        width: 0;
+        visibility: hidden;
+    }
+
+    .sidebar.active {
+        width: 250px;
+        visibility: visible;
+    }
+
+    .sidebar .nav-link {
+        font-size: 14px;
+    }
+
+    .sidebar .button-logout {
+        font-size: 14px;
+    }
+
+    /* Añadir relleno al body cuando el sidebar está activo para evitar que el contenido se solape */
+    body.sidebar-active {
+        padding-left: 250px;
+    }
+}
+
+/* Botón de hamburguesa para móviles */
+.sidebar-toggle-btn {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .sidebar-toggle-btn {
+        display: block;
+        background-color: #343a40;
+        color: white;
+        font-size: 20px;
+        padding: 10px;
+        cursor: pointer;
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        border-radius: 50%;
+        z-index: 9999;
+    }
+
+    .sidebar-toggle-btn.open {
+        background-color: #007bff;
+    }
+
+    /* Asegurarse de que la clase active funcione correctamente */
+    .sidebar.active {
+        left: 0;
+        visibility: visible;
+    }
+}

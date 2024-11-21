@@ -1,0 +1,150 @@
+.btn-create-custom {
+    font-size: 16px !important;
+    padding: 10px 20px !important;
+    border-radius: 5px !important;
+    background-color: #28a745 !important;
+    border-color: #28a745 !important;
+    width: 250px !important;
+    text-align: center !important;
+    margin: 10px !important;
+    transition: background-color 0.3s ease, border-color 0.3s ease !important;
+}
+
+.btn-create-custom:hover {
+    background-color: #218838 !important;
+    border-color: #218838 !important;
+}
+
+.btn-delete-custom {
+    font-size: 16px !important;
+    padding: 10px 10px !important;
+    border-radius: 5px !important;
+    background-color: #dc3545 !important;
+    border-color: #dc3545 !important;
+    width: 200px !important;
+    text-align: center !important;
+    margin: 10px;
+    transition: background-color 0.3s ease, border-color 0.3s ease !important;
+    box-sizing: border-box; /* Asegúrate de que el ancho se calcule correctamente */
+}
+
+.btn-delete-custom svg {
+    height: 16px;
+    width: 16px;
+}
+
+.btn-modify-custom {
+    margin: 10px;
+    font-size: 16px !important;
+    padding: 10px 10px !important;
+    border-radius: 5px !important;
+    background-color: #ffc107 !important;
+    border-color: #ffc107 !important;
+    width: 200px !important;
+    text-align: center !important;
+    transition: background-color 0.3s ease, border-color 0.3s ease !important;
+    box-sizing: border-box; /* Asegúrate de que el ancho se calcule correctamente */
+}
+
+.btn-modify-custom svg {
+    height: 16px;
+    width: 16px;
+}
+
+.btn-login-custom {
+    font-size: 16px !important;
+    padding: 10px 20px !important;
+    border-radius: 5px !important;
+    background-color: #007bff !important;
+    border-color: #007bff !important;
+    width: 200px !important;
+    text-align: center !important;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+    transition: background-color 0.3s ease, border-color 0.3s ease !important;
+}
+
+.btn-login-custom:hover {
+    background-color: #0056b3 !important;
+    border-color: #0056b3 !important;
+}
+
+.btn-logout-custom {
+    background-color: #dc3545 !important;
+    border-color: #dc3545 !important;
+    color: #fff !important;
+    padding: 10px 20px !important;
+    font-size: 16px !important;
+    border-radius: 5px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.btn-logout-custom:hover {
+    background-color: #c82333 !important;
+    border-color: #bd2130 !important;
+}
+
+.btn-logout-custom:focus, .btn-logout-custom:active {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.btn-submit-custom {
+    background-color: #28a745 !important;
+    border-color: #28a745 !important;
+    color: #fff !important;
+    padding: 10px 20px !important;
+    font-size: 16px !important;
+    border-radius: 5px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 10px !important;
+}
+
+.btn-submit-custom svg {
+    margin-right: 8px !important;  /* Added space between the icon and the text */
+}
+
+.btn-submit-custom:hover {
+    background-color: #218838 !important;
+    border-color: #1e7e34 !important;
+}
+
+.btn-submit-custom:focus, .btn-submit-custom:active {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/*CANCEL BUTTON*/
+.btn-cancel-custom {
+    background-color: #dc3545 !important;
+    border-color: #dc3545 !important;
+    color: #fff !important;
+    padding: 10px 20px !important;
+    font-size: 16px !important;
+    border-radius: 5px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 10px !important;
+}
+
+.btn-cancel-custom .react-icons {
+    margin-right: 12px !important;  /* Space between the icon and text */
+}
+
+.btn-cancel-custom:hover {
+    background-color: #c82333 !important;
+    border-color: #bd2130 !important;
+}
+
+.btn-cancel-custom:focus, .btn-cancel-custom:active {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+
+
