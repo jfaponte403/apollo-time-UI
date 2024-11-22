@@ -21,6 +21,8 @@ const SubjectsAdminPage: React.FC = () => {
         created_at: ""
     });
 
+    
+
     const [searchValue, setSearchValue] = useState<string>("");
     const [isActive, setIsActive] = useState<boolean>(true);
     const [shouldRefreshTable, setShouldRefreshTable] = useState<boolean>(false);

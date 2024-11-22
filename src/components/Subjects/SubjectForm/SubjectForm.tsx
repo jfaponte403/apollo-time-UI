@@ -15,6 +15,7 @@ interface PayloadCreateSubject {
     degree_id: string;
 }
 
+
 interface ResponseSubjectForm {
     message: string;
 }

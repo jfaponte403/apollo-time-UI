@@ -13,6 +13,7 @@ interface Props {
     onDelete: (value: Subject) => void;
 }
 
+
 const SubjectTable: React.FC<Props> = ({ searchValue, isActive, refreshKey, onModify, onDelete }) => {
     const [subjects, setSubjects] = useState<Subject[]>([]);
 

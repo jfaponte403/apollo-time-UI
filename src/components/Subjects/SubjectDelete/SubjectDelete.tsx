@@ -11,6 +11,7 @@ interface Props {
     onDeleteSuccess: () => void;
 }
 
+
 const SubjectDelete: React.FC<Props> = ({ isOpen, onClose, subject, onDeleteSuccess }) => {
 
     const handleDelete = async () => {

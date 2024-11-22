@@ -16,6 +16,7 @@ interface PayloadModifySubject {
     is_active: boolean;
 }
 
+
 const SubjectModify: React.FC<Props> = ({ isOpen, onClose, subject, onModifySuccess }) => {
     const [formData, setFormData] = useState<PayloadModifySubject>({
         name: subject.name,
