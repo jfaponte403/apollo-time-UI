@@ -14,7 +14,7 @@ import AdminDashboard from "../components/AdminDashboard/AdminDashboard.tsx";
 import TeacherDashboard from "../components/TeacherDashboard/TeacherDashboard.tsx";
 import StudentDashboard from "../components/StudentDashboard/StudentDashboard.tsx";
 import ScheduleAdminPage from "../pages/AdminPage/ScheduleAdminPage/ScheduleAdminPage.tsx";
-
+import SubjectsAdminPage from '../pages/AdminPage/SubjectsAdminPage/SubjectsAdminPage.tsx';
 const AppRoutes: React.FC = () => {
     const { isAuthenticated, role }: AuthToken = getAuthToken();
 
@@ -42,8 +42,8 @@ const AppRoutes: React.FC = () => {
                     <Route path="students" element={<StudentAdminPage />} />
                     <Route path="courses" element={<CoursesAdminPage />} />
                     <Route path="schedules" element={<ScheduleAdminPage />} />
-                    <Route path="classrooms" element={<></>} />
-                    <Route path="subjects" element={<></>} />
+                    <Route path="classrooms" element={<>ClassroomAdminPage</>} />
+                    <Route path="subjects" element={<SubjectsAdminPage/>} />
                 </Route>
 
                 {/* TeacherDashboard Routes */}
