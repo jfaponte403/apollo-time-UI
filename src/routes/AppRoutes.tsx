@@ -13,7 +13,7 @@ import CoursesAdminPage from '../pages/AdminPage/CoursesAdminPage/CoursesAdminPa
 import AdminDashboard from "../components/AdminDashboard/AdminDashboard.tsx";
 import TeacherDashboard from "../components/TeacherDashboard/TeacherDashboard.tsx";
 import StudentDashboard from "../components/StudentDashboard/StudentDashboard.tsx";
-import ScheduleAdminPage from "../pages/AdminPage/ScheduleAdminPage /ScheduleAdminPage.tsx";
+import ScheduleAdminPage from "../pages/AdminPage/ScheduleAdminPage/ScheduleAdminPage.tsx";
 
 const AppRoutes: React.FC = () => {
     const { isAuthenticated, role }: AuthToken = getAuthToken();
