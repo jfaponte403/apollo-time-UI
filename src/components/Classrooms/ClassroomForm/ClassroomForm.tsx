@@ -73,17 +73,19 @@ const ClassroomForm: React.FC<ClassroomFormProps> = ({ isOpen, onClose, onCreate
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
-                    <Form.Group controlId="classroomName" style={{ position: 'relative' }}>
+                    <Form.Group controlId="classroomName">
+                        <Form.Label>Classroom Name</Form.Label>
                         <Form.Control
                             type="text"
                             required
                             placeholder="Enter classroom name"
                             value={classroomName}
                             onChange={(e) => setClassroomName(e.target.value)}
-                            style={{ paddingLeft: '30px' }}
+                            style={{ paddingLeft: '10px' }}
                         />
                     </Form.Group>
-                    <Form.Group controlId="classroomType" style={{ marginTop: '10px' }}>
+                    <Form.Group controlId="classroomType">
+                        <Form.Label>Classroom Type</Form.Label>
                         <Form.Control
                             type="text"
                             required
@@ -92,7 +94,8 @@ const ClassroomForm: React.FC<ClassroomFormProps> = ({ isOpen, onClose, onCreate
                             onChange={(e) => setClassroomType(e.target.value)}
                         />
                     </Form.Group>
-                    <Form.Group controlId="classroomCapacity" style={{ marginTop: '10px' }}>
+                    <Form.Group controlId="classroomCapacity">
+                        <Form.Label>Classroom Capacity</Form.Label>
                         <Form.Control
                             type="number"
                             required
@@ -101,7 +104,7 @@ const ClassroomForm: React.FC<ClassroomFormProps> = ({ isOpen, onClose, onCreate
                             onChange={(e) => setClassroomCapacity(Number(e.target.value))}
                         />
                     </Form.Group>
-                    <div className="d-flex justify-content-between" style={{ marginTop: '15px' }}>
+                    <div className="d-flex justify-content-between">
                         <SubmitButton text_button="Submit" type="submit" />
                         <CancelButton text_button="Cancel" onPress={onClose} />
                     </div>

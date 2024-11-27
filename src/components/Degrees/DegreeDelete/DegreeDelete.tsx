@@ -1,10 +1,8 @@
 import React from 'react';
-import { Modal, Form } from 'react-bootstrap';
+import {Modal,  Button} from 'react-bootstrap';
 import Swal from "sweetalert2";
-import { deleteResource } from "../../../api/api.ts";
-import { Degree } from "../../../interfaces/Degree.ts";
-import SubmitButton from "../../Buttons/SubmitButton.tsx";
-import CancelButton from "../../Buttons/CancelButton.tsx";
+import {deleteResource} from "../../../api/api.ts";
+import {Degree} from "../../../interfaces/Degree.ts";
 
 interface DegreeDeleteProps {
     isOpen: boolean;
@@ -13,7 +11,7 @@ interface DegreeDeleteProps {
     onCreateSuccess: () => void;
 }
 
-const DegreeDelete: React.FC<DegreeDeleteProps> = ({ isOpen, onClose, degree, onCreateSuccess }) => {
+const DegreeDelete: React.FC<DegreeDeleteProps> = ({isOpen, onClose, degree, onCreateSuccess}) => {
 
     const handleDelete = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -54,18 +52,18 @@ const DegreeDelete: React.FC<DegreeDeleteProps> = ({ isOpen, onClose, degree, on
                 <Modal.Title>Confirm Deletion</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <Form onSubmit={handleDelete}>
-                    <p>Are you sure you want to delete <strong>{degree.name}</strong>? This action cannot be undone.</p>
-                    <SubmitButton
-                        text_button="Delete"
-                        type="submit"
-                    />
-                    <CancelButton
-                        text_button="Cancel"
-                        onPress={onClose}
-                    />
-                </Form>
+                <p>Are you sure you want to delete <strong>{degree.name}</strong>? This action cannot be undone.</p>
+
             </Modal.Body>
+
+            <Modal.Footer>
+                <Button variant="secondary" onClick={onClose}>
+                    Cancel
+                </Button>
+                <Button variant="danger" onClick={handleDelete}>
+                    Confirm
+                </Button>
+            </Modal.Footer>
         </Modal>
     );
 };

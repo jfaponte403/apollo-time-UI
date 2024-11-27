@@ -79,7 +79,7 @@ const ClassroomModify: React.FC<ClassroomModifyProps> = ({ isOpen, onClose, clas
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
-                    <Form.Group controlId="classroomName" style={{ position: 'relative' }}>
+                    <Form.Group controlId="classroomName" className="mb-3">
                         <Form.Control
                             type="text"
                             required
@@ -88,7 +88,7 @@ const ClassroomModify: React.FC<ClassroomModifyProps> = ({ isOpen, onClose, clas
                             onChange={(e) => setClassroomName(e.target.value)}
                         />
                     </Form.Group>
-                    <Form.Group controlId="classroomType" style={{ marginTop: '10px' }}>
+                    <Form.Group controlId="classroomType" className="mb-3">
                         <Form.Control
                             type="text"
                             required
@@ -97,7 +97,7 @@ const ClassroomModify: React.FC<ClassroomModifyProps> = ({ isOpen, onClose, clas
                             onChange={(e) => setClassroomType(e.target.value)}
                         />
                     </Form.Group>
-                    <Form.Group controlId="classroomCapacity" style={{ marginTop: '10px' }}>
+                    <Form.Group controlId="classroomCapacity" className="mb-3">
                         <Form.Control
                             type="number"
                             required
@@ -106,7 +106,7 @@ const ClassroomModify: React.FC<ClassroomModifyProps> = ({ isOpen, onClose, clas
                             onChange={(e) => setClassroomCapacity(Number(e.target.value))}
                         />
                     </Form.Group>
-                    <div className="d-flex justify-content-between" style={{ marginTop: '15px' }}>
+                    <div className="d-flex justify-content-between">
                         <SubmitButton text_button="Modify" type="submit" />
                         <CancelButton text_button="Cancel" onPress={onClose} />
                     </div>

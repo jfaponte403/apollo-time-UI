@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Modal, Button, Form } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Modal, Form } from 'react-bootstrap';
 import './SubjectForm.css';
-import { createResource, readResource } from "../../../api/api.ts";
+import { createResource } from "../../../api/api.ts";
 import Swal from "sweetalert2";
+import SubmitButton from "../../Buttons/SubmitButton.tsx";
+import CancelButton from "../../Buttons/CancelButton.tsx";
 
 interface SubjectFormProps {
     isOpen: boolean;
@@ -10,62 +12,33 @@ interface SubjectFormProps {
     onCreateSuccess: () => void;
 }
 
-interface PayloadCreateSubject {
+interface FormData {
     name: string;
-    degree_id: string;
 }
 
-
-interface ResponseSubjectForm {
-    message: string;
-}
-
-interface Degree {
-    id: string;
-    name: string;
-    is_active: string;
-}
-
-interface GetDegreeResponse {
-    degrees: Degree[];
-}
 
 const SubjectForm: React.FC<SubjectFormProps> = ({ isOpen, onClose, onCreateSuccess }) => {
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
-    const [degrees, setDegrees] = useState<Degree[]>([]);
-    const [degreeId, setDegreeId] = useState('');
+    const [formData, setFormData] = useState<FormData>({
+        name: ""
+    });
 
-    useEffect(() => {
-        readResource<GetDegreeResponse>('/degree')
-            .then(response => {
-                setDegrees(response.data.degrees);
-            });
-    }, []);
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
 
-        const payload: PayloadCreateSubject = {
-            name,
-            degree_id: degreeId,
-        };
-
         try {
-            const response = await createResource<ResponseSubjectForm>("/subject", payload);
+            const response = await createResource("/subject", formData);
             if (response.status === 201) {
                 await Swal.fire({
                     icon: 'success',
                     title: 'Success!',
-                    text: response.data.message,
+                    text: "subject was created successful",
                     confirmButtonText: 'Okay',
                     customClass: {
                         confirmButton: 'green-button'
                     }
                 });
-                setName('');
-                setDescription('');
-                setDegreeId('');
+                setFormData({name: ""});
                 onCreateSuccess();
                 onClose();
             } else {
@@ -98,38 +71,24 @@ const SubjectForm: React.FC<SubjectFormProps> = ({ isOpen, onClose, onCreateSucc
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
                     <Form.Group controlId="name">
+                        <Form.Label>Subject Name</Form.Label>
                         <Form.Control
                             type="text"
                             required
-                            placeholder="Subject Name"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
+                            placeholder="Enter Subject Name"
+                            value={formData.name}
+                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                         />
                     </Form.Group>
-                    <Form.Group controlId="degree">
-                        <Form.Control
-                            as="select"
-                            required
-                            value={degreeId}
-                            onChange={(e) => setDegreeId(e.target.value)}
-                        >
-                            <option value="">Select Degree</option>
-                            {degrees.map(degree =>
-                                degree.is_active && (
-                                    <option key={degree.id} value={degree.id}>
-                                        {degree.name}
-                                    </option>
-                                )
-                            )}
-                        </Form.Control>
-                    </Form.Group>
                     <div className="d-flex justify-content-between mt-3">
-                        <Button variant="primary" type="submit">
-                            Submit
-                        </Button>
-                        <Button variant="secondary" onClick={onClose}>
-                            Cancel
-                        </Button>
+                        <SubmitButton
+                            type="submit"
+                            text_button="Submit"
+                        />
+                        <CancelButton
+                            onPress={onClose}
+                            text_button="Cancel"
+                        />
                     </div>
                 </Form>
             </Modal.Body>

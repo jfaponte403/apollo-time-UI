@@ -1,8 +1,10 @@
-import { Button, Form, Modal } from "react-bootstrap";
+import { Form, Modal } from "react-bootstrap";
 import React, { useState } from "react";
 import { updateResource } from "../../../api/api.ts";
 import Swal from "sweetalert2";
 import { Subject } from "../../../interfaces/Subject.ts";
+import SubmitButton from "../../Buttons/SubmitButton.tsx";
+import CancelButton from "../../Buttons/CancelButton.tsx";
 
 interface Props {
     subject: Subject;
@@ -13,14 +15,12 @@ interface Props {
 
 interface PayloadModifySubject {
     name: string;
-    is_active: boolean;
 }
 
 
 const SubjectModify: React.FC<Props> = ({ isOpen, onClose, subject, onModifySuccess }) => {
     const [formData, setFormData] = useState<PayloadModifySubject>({
         name: subject.name,
-        is_active: subject.is_active,
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,22 +85,16 @@ const SubjectModify: React.FC<Props> = ({ isOpen, onClose, subject, onModifySucc
                             onChange={handleChange}
                         />
                     </Form.Group>
-                    <Form.Group controlId="is_active">
-                        <Form.Check
-                            type="checkbox"
-                            name="is_active"
-                            label="Active"
-                            checked={formData.is_active}
-                            onChange={handleChange}
-                        />
-                    </Form.Group>
+
                     <div className="d-flex justify-content-between">
-                        <Button variant="primary" type="submit">
-                            Submit
-                        </Button>
-                        <Button variant="secondary" onClick={onClose}>
-                            Cancel
-                        </Button>
+                        <SubmitButton
+                            type="submit"
+                            text_button="Submit"
+                        />
+                        <CancelButton
+                            onPress={onClose}
+                            text_button="Cancel"
+                        />
                     </div>
                 </Form>
             </Modal.Body>

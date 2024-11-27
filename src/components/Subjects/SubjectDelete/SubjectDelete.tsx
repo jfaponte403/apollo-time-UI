@@ -1,8 +1,10 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import { Modal } from 'react-bootstrap';
 import Swal from "sweetalert2";
-import { deleteResource } from "../../../api/api.ts";
-import { Subject } from "../../../interfaces/Subject.ts";
+import { deleteResource } from "../../../api/api";
+import { Subject } from "../../../interfaces/Subject";
+import DeleteButton from "../../Buttons/DeleteButton";
+import SubmitButton from "../../Buttons/SubmitButton";
 
 interface Props {
     isOpen: boolean;
@@ -11,10 +13,10 @@ interface Props {
     onDeleteSuccess: () => void;
 }
 
-
 const SubjectDelete: React.FC<Props> = ({ isOpen, onClose, subject, onDeleteSuccess }) => {
 
-    const handleDelete = async () => {
+    const handleDelete = async (event: React.FormEvent) => {
+        event.preventDefault();
         try {
             const response = await deleteResource(`/subject/${subject.id}`);
 
@@ -25,13 +27,11 @@ const SubjectDelete: React.FC<Props> = ({ isOpen, onClose, subject, onDeleteSucc
                     text: `${subject.name} has been deleted successfully.`,
                     confirmButtonText: 'Okay',
                     customClass: {
-                        confirmButton: 'green-button'
-                    }
+                        confirmButton: 'green-button',
+                    },
                 });
                 onDeleteSuccess();
                 onClose();
-            } else {
-                throw new Error('Deletion failed');
             }
         } catch {
             await Swal.fire({
@@ -39,8 +39,8 @@ const SubjectDelete: React.FC<Props> = ({ isOpen, onClose, subject, onDeleteSucc
                 title: 'Error!',
                 text: 'An error occurred while deleting the subject.',
                 customClass: {
-                    confirmButton: 'error-button'
-                }
+                    confirmButton: 'error-button',
+                },
             });
         }
     };
@@ -51,16 +51,23 @@ const SubjectDelete: React.FC<Props> = ({ isOpen, onClose, subject, onDeleteSucc
                 <Modal.Title>Confirm Deletion</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <p>Are you sure you want to delete <strong>{subject.name}</strong>? This action cannot be undone.</p>
+                <p>
+                    Are you sure you want to delete <strong>{subject.name}</strong>?
+                    This action cannot be undone.
+                </p>
+                <form onSubmit={handleDelete}>
+                    <div className="d-flex justify-content-end gap-2">
+                        <SubmitButton
+                            text_button="Delete"
+                            type="submit"
+                        />
+                        <DeleteButton
+                            text_button="Cancel"
+                            onPress={onClose}
+                        />
+                    </div>
+                </form>
             </Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary" onClick={onClose}>
-                    Cancel
-                </Button>
-                <Button variant="danger" onClick={handleDelete}>
-                    Confirm
-                </Button>
-            </Modal.Footer>
         </Modal>
     );
 };

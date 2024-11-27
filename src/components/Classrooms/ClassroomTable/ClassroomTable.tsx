@@ -43,26 +43,26 @@ const ClassroomTable: React.FC<ClassroomTableProps> = ({ searchValue, isActive, 
     return (
         <Table striped bordered hover>
             <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Type</th>
-                    <th>Capacity</th>
-                    <th>Created At</th>
-                    <th>Active</th>
-                    <th>Actions</th>
-                </tr>
+            <tr>
+                <th>Created At</th>
+                <th>Active</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Capacity</th>
+                <th>Actions</th>
+            </tr>
             </thead>
             <tbody>
                 {filteredClassrooms.map(classroom => (
                     <tr key={classroom.id}>
+                        <td>{new Date(classroom.created_at).toLocaleDateString()}</td>
+                        <td>{classroom.is_active ? 'Yes' : 'No'}</td>
                         <td>{classroom.name}</td>
                         <td>{classroom.type}</td>
                         <td>{classroom.capacity}</td>
-                        <td>{new Date(classroom.created_at).toLocaleDateString()}</td>
-                        <td>{classroom.is_active ? 'Yes' : 'No'}</td>
                         <td className="actions">
-                            <ModifyButton text_button="Modify" onPress={() => onModify(classroom)} />
-                            <DeleteButton text_button="Delete" onPress={() => onDelete(classroom)} />
+                            <ModifyButton text_button="Modify" onPress={() => onModify(classroom)}/>
+                            <DeleteButton text_button="Delete" onPress={() => onDelete(classroom)}/>
                         </td>
                     </tr>
                 ))}
