@@ -43,7 +43,7 @@ const SubjectTable: React.FC<Props> = ({ searchValue, isActive, refreshKey, onMo
             <thead>
             <tr>
                 <th>Created at</th>
-                <th>Status</th>
+                <th>Active</th>
                 <th>Name</th>
                 <th>Actions</th>
             </tr>
@@ -52,7 +52,7 @@ const SubjectTable: React.FC<Props> = ({ searchValue, isActive, refreshKey, onMo
             {filteredSubjects.map((subject) => (
                 <tr key={subject.id}>
                     <td>{new Date(subject.created_at).toLocaleDateString()}</td>
-                    <td>{subject.is_active ? "Active" : "Inactive"}</td>
+                    <td>{subject.is_active ? 'Yes' : 'No'}</td>
                     <td>{subject.name}</td>
                     <td>
                         <ModifyButton text_button="Modify" onPress={() => onModify(subject)} />
