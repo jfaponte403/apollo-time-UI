@@ -1,29 +1,29 @@
 import React from 'react';
-import {Modal,  Button} from 'react-bootstrap';
+import {Modal, Button} from 'react-bootstrap';
 import Swal from "sweetalert2";
 import {deleteResource} from "../../../api/api.ts";
-import {Degree} from "../../../interfaces/Degree.ts";
+import {Classroom} from "../../../interfaces/Classroom.ts";
 
-interface DegreeDeleteProps {
+interface ClassroomDeleteProps {
     isOpen: boolean;
     onClose: () => void;
-    degree: Degree;
+    classroom: Classroom;
     onCreateSuccess: () => void;
 }
 
-const DegreeDelete: React.FC<DegreeDeleteProps> = ({isOpen, onClose, degree, onCreateSuccess}) => {
+const ClassroomDelete: React.FC<ClassroomDeleteProps> = ({isOpen, onClose, classroom, onCreateSuccess}) => {
 
     const handleDelete = async (e: React.FormEvent) => {
         e.preventDefault();
 
         try {
-            const response = await deleteResource(`/degree/${degree.id}`);
+            const response = await deleteResource(`/classroom/${classroom.id}`);
 
             if (response.status === 204) {
                 await Swal.fire({
                     icon: 'success',
                     title: 'Deleted!',
-                    text: `${degree.name} has been deleted successfully.`,
+                    text: `${classroom.name} has been deleted successfully.`,
                     confirmButtonText: 'Okay',
                     customClass: {
                         confirmButton: 'green-button'
@@ -38,7 +38,7 @@ const DegreeDelete: React.FC<DegreeDeleteProps> = ({isOpen, onClose, degree, onC
             await Swal.fire({
                 icon: 'error',
                 title: 'Error!',
-                text: 'An error occurred while deleting the degree.',
+                text: 'An error occurred while deleting the classroom.',
                 customClass: {
                     confirmButton: 'error-button'
                 }
@@ -52,10 +52,8 @@ const DegreeDelete: React.FC<DegreeDeleteProps> = ({isOpen, onClose, degree, onC
                 <Modal.Title>Confirm Deletion</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <p>Are you sure you want to delete <strong>{degree.name}</strong>? This action cannot be undone.</p>
-
+                <p>Are you sure you want to delete <strong>{classroom.name}</strong>? This action cannot be undone.</p>
             </Modal.Body>
-
             <Modal.Footer>
                 <Button variant="secondary" onClick={onClose}>
                     Cancel
@@ -65,7 +63,8 @@ const DegreeDelete: React.FC<DegreeDeleteProps> = ({isOpen, onClose, degree, onC
                 </Button>
             </Modal.Footer>
         </Modal>
+
     );
 };
 
-export default DegreeDelete;
+export default ClassroomDelete;
